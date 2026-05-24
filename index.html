@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borderline — Real MLB Pitch Calls</title>
+    <meta name="description" content="Call balls and strikes on real MLB pitches. Compare your accuracy against actual umpires. Available on the App Store.">
+    <meta property="og:title" content="Borderline — Real MLB Pitch Calls">
+    <meta property="og:description" content="Call balls and strikes on real MLB pitches. How sharp is your eye?">
+    <meta property="og:image" content="og-image.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:       #080f1a;
+            --bg2:      #0d1829;
+            --border:   rgba(255,255,255,0.08);
+            --amber:    #f9c774;
+            --amber-dim: rgba(249,199,116,0.12);
+            --green:    #38bf66;
+            --red:      #e35252;
+            --text:     #ffffff;
+            --text-dim: rgba(255,255,255,0.45);
+            --text-faint: rgba(255,255,255,0.2);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 40px;
+            background: rgba(8,15,26,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            font-size: 18px; font-weight: 700; letter-spacing: -0.3px;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .nav-logo span { color: var(--amber); }
+        .nav-links { display: flex; gap: 32px; }
+        .nav-links a {
+            color: var(--text-dim); font-size: 14px; font-weight: 500;
+            text-decoration: none; transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(249,199,116,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 14px; border-radius: 999px;
+            background: var(--amber-dim);
+            border: 1px solid rgba(249,199,116,0.25);
+            color: var(--amber); font-size: 13px; font-weight: 500;
+            margin-bottom: 28px;
+        }
+        .hero h1 {
+            font-size: clamp(42px, 8vw, 72px);
+            font-weight: 700; letter-spacing: -1.5px; line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--amber) 0%, #f97316 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-sub {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--text-dim); max-width: 540px; margin: 0 auto 40px;
+            font-weight: 400; line-height: 1.6;
+        }
+        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 28px; border-radius: 14px;
+            background: var(--amber); color: #1a0f00;
+            font-size: 16px; font-weight: 600;
+            text-decoration: none; transition: all 0.2s;
+            border: none; cursor: pointer;
+        }
+        .btn-primary:hover { background: #ffd48a; transform: translateY(-1px); }
+
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 28px; border-radius: 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid var(--border);
+            color: var(--text); font-size: 16px; font-weight: 500;
+            text-decoration: none; transition: all 0.2s;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+
+        /* STRIKE ZONE VISUAL */
+        .zone-visual {
+            margin: 60px auto 0;
+            width: min(320px, 85vw);
+            position: relative;
+        }
+        .zone-box {
+            border: 2px solid rgba(255,255,255,0.35);
+            border-radius: 4px;
+            aspect-ratio: 0.75;
+            position: relative;
+            background: rgba(255,255,255,0.03);
+        }
+        .zone-grid-line {
+            position: absolute; background: rgba(255,255,255,0.1);
+        }
+        .zone-grid-v1 { width: 1px; top: 0; bottom: 0; left: 33.3%; }
+        .zone-grid-v2 { width: 1px; top: 0; bottom: 0; left: 66.6%; }
+        .zone-grid-h1 { height: 1px; left: 0; right: 0; top: 33.3%; }
+        .zone-grid-h2 { height: 1px; left: 0; right: 0; top: 66.6%; }
+        .zone-ball {
+            position: absolute;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse-ball 2s ease-in-out infinite;
+        }
+        .ball-strike {
+            background: var(--green);
+            box-shadow: 0 0 20px rgba(56,191,102,0.5);
+            top: 72%; left: 88%;
+        }
+        .ball-ball {
+            background: var(--red);
+            box-shadow: 0 0 20px rgba(227,82,82,0.5);
+            top: 20%; left: 15%;
+        }
+        @keyframes pulse-ball {
+            0%, 100% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+            50% { opacity: 0.75; transform: translate(-50%,-50%) scale(0.92); }
+        }
+        .zone-label {
+            position: absolute; top: -24px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px; font-weight: 500; letter-spacing: 1.5px;
+            color: var(--text-faint); white-space: nowrap;
+        }
+        .verdict-badge {
+            position: absolute;
+            padding: 5px 12px; border-radius: 6px;
+            font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+        }
+        .verdict-strike {
+            background: rgba(56,191,102,0.2); color: var(--green);
+            border: 1px solid rgba(56,191,102,0.4);
+            bottom: 22%; right: -10%;
+        }
+        .verdict-ball {
+            background: rgba(227,82,82,0.15); color: var(--red);
+            border: 1px solid rgba(227,82,82,0.35);
+            top: 12%; left: -14%;
+        }
+
+        /* FEATURES */
+        section { padding: 100px 24px; }
+        .section-inner { max-width: 1080px; margin: 0 auto; }
+        .section-label {
+            font-size: 11px; font-weight: 600; letter-spacing: 2px;
+            color: var(--amber); text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .section-title {
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 700; letter-spacing: -0.8px;
+            line-height: 1.15; margin-bottom: 16px;
+        }
+        .section-sub {
+            font-size: 17px; color: var(--text-dim);
+            max-width: 520px; line-height: 1.65;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px; margin-top: 56px;
+        }
+        .feature-card {
+            padding: 28px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .feature-card:hover {
+            border-color: rgba(249,199,116,0.25);
+            transform: translateY(-2px);
+        }
+        .feature-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; margin-bottom: 16px;
+        }
+        .feature-card h3 {
+            font-size: 16px; font-weight: 600; margin-bottom: 8px;
+        }
+        .feature-card p {
+            font-size: 14px; color: var(--text-dim); line-height: 1.6;
+        }
+
+        /* HOW IT WORKS */
+        .steps { display: flex; flex-direction: column; gap: 0; margin-top: 56px; }
+        .step {
+            display: flex; gap: 28px; align-items: flex-start;
+            padding: 32px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .step:last-child { border-bottom: none; }
+        .step-num {
+            width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+            background: var(--amber-dim);
+            border: 1px solid rgba(249,199,116,0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; font-weight: 700; color: var(--amber);
+        }
+        .step-content h3 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+        .step-content p { font-size: 15px; color: var(--text-dim); line-height: 1.6; }
+
+        /* MODES */
+        .modes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px; margin-top: 52px;
+        }
+        .mode-card {
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: var(--bg2);
+        }
+        .mode-card .mode-emoji { font-size: 28px; margin-bottom: 12px; display: block; }
+        .mode-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+        .mode-card p { font-size: 13px; color: var(--text-dim); line-height: 1.55; }
+        .mode-badge {
+            display: inline-block; margin-top: 10px;
+            padding: 3px 8px; border-radius: 5px;
+            font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+        }
+        .badge-free { background: rgba(56,191,102,0.15); color: var(--green); }
+        .badge-pro  { background: var(--amber-dim); color: var(--amber); }
+
+        /* DATA SECTION */
+        .data-pills {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px;
+        }
+        .data-pill {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 16px; border-radius: 10px;
+            background: var(--bg2); border: 1px solid var(--border);
+            font-size: 14px; font-weight: 500;
+        }
+        .data-pill .dot {
+            width: 7px; height: 7px; border-radius: 50%; background: var(--amber);
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .cta-section h2 {
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 700; letter-spacing: -0.8px;
+            margin-bottom: 16px;
+        }
+        .cta-section p {
+            font-size: 17px; color: var(--text-dim); margin-bottom: 36px;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 48px 24px;
+            border-top: 1px solid var(--border);
+        }
+        .footer-inner {
+            max-width: 1080px; margin: 0 auto;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 16px;
+        }
+        .footer-logo {
+            font-size: 16px; font-weight: 700; color: var(--text);
+            text-decoration: none;
+        }
+        .footer-logo span { color: var(--amber); }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a {
+            font-size: 14px; color: var(--text-dim); text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--text); }
+        .footer-copy {
+            font-size: 13px; color: var(--text-faint);
+            width: 100%; margin-top: 8px;
+        }
+
+        /* APPLE BADGE */
+        .apple-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 12px 22px; border-radius: 14px;
+            background: #000; border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; text-decoration: none;
+            transition: all 0.2s;
+        }
+        .apple-badge:hover { background: #1a1a1a; transform: translateY(-1px); }
+        .apple-badge-text { text-align: left; line-height: 1.2; }
+        .apple-badge-text .top { font-size: 10px; opacity: 0.7; }
+        .apple-badge-text .bottom { font-size: 16px; font-weight: 600; }
+
+        @media (max-width: 600px) {
+            nav { padding: 14px 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 100px 20px 60px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo">Border<span>line</span></a>
+    <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#modes">Game modes</a>
+        <a href="privacy-policy.html">Privacy</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">⚾️ Built on real Statcast data</div>
+    <h1>Can you call it<br><em>better than the ump?</em></h1>
+    <p class="hero-sub">
+        Real MLB pitches. Real strike zones. Call balls and strikes and see how you stack up against the actual umpire behind the plate.
+    </p>
+    <div class="hero-actions">
+        <a href="https://apps.apple.com/app/id6772781356" class="apple-badge">
+            <svg width="22" height="26" viewBox="0 0 22 26" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.05 13.77c-.03-3.3 2.7-4.9 2.82-4.97-1.54-2.25-3.93-2.56-4.78-2.59-2.04-.21-3.97 1.2-5 1.2-1.03 0-2.63-1.17-4.32-1.14C4.52 6.3 2.34 7.53 1.14 9.52c-2.42 4.19-.62 10.4 1.74 13.81 1.16 1.67 2.53 3.54 4.33 3.47 1.74-.07 2.4-1.12 4.51-1.12 2.11 0 2.71 1.12 4.55 1.09 1.87-.03 3.06-1.7 4.2-3.38 1.33-1.93 1.88-3.8 1.91-3.9-.04-.02-3.66-1.4-3.69-5.58v.36z"/>
+                <path d="M14.76 4.48c.96-1.17 1.62-2.79 1.44-4.4-1.39.06-3.08.93-4.07 2.08-.89 1.03-1.68 2.69-1.47 4.27 1.55.12 3.13-.79 4.1-1.95z"/>
+            </svg>
+            <div class="apple-badge-text">
+                <div class="top">Download on the</div>
+                <div class="bottom">App Store</div>
+            </div>
+        </a>
+    </div>
+
+    <div class="zone-visual">
+        <div class="zone-label">RULEBOOK STRIKE ZONE</div>
+        <div class="zone-box">
+            <div class="zone-grid-line zone-grid-v1"></div>
+            <div class="zone-grid-line zone-grid-v2"></div>
+            <div class="zone-grid-line zone-grid-h1"></div>
+            <div class="zone-grid-line zone-grid-h2"></div>
+            <div class="zone-ball ball-strike"></div>
+            <div class="zone-ball ball-ball"></div>
+            <div class="verdict-badge verdict-strike">IN — STRIKE</div>
+            <div class="verdict-badge verdict-ball">OUT — BALL</div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" style="background: var(--bg2); border-top: 1px solid var(--border);">
+    <div class="section-inner">
+        <div class="section-label">Features</div>
+        <h2 class="section-title">Everything a baseball fan<br>needs to argue with the ump</h2>
+        <p class="section-sub">Built on real Statcast pitch data from Baseball Savant and the MLB Stats API.</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(249,199,116,0.12);">⚡️</div>
+                <h3>Real Statcast Data</h3>
+                <p>Every pitch is sourced from Baseball Savant. Real coordinates, real spin rates, real umpires — no simulations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(56,191,102,0.12);">🎯</div>
+                <h3>ABS Strike Zone</h3>
+                <p>Uses MLB's Automated Ball-Strike system rules. If any part of the ball touches the rulebook zone, it's a strike.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(99,102,241,0.12);">📊</div>
+                <h3>Personal Stats</h3>
+                <p>Track your accuracy over time. See which pitch types you struggle with and where in the zone you're weakest.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(227,82,82,0.12);">🚨</div>
+                <h3>Blown Calls Mode</h3>
+                <p>Play only the pitches the umpire got wrong. Perfect for reliving the moments that made you yell at the TV.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(249,199,116,0.12);">🔍</div>
+                <h3>Umpire Search</h3>
+                <p>Search for every game called by a specific umpire this season. Find out if Laz Diaz really is as bad as you think.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(56,191,102,0.12);">📅</div>
+                <h3>Daily Challenge</h3>
+                <p>10 blown calls from yesterday's games. Same pitches for everyone. Share your score and challenge your friends.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+    <div class="section-inner">
+        <div class="section-label">How it works</div>
+        <h2 class="section-title">Simple enough for casual fans.<br>Deep enough for diehards.</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h3>A pitch is thrown</h3>
+                    <p>Watch the ball fly from the pitcher's hand toward the plate in real perspective. The ball's speed, break, and trajectory are all derived from real Statcast measurements.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h3>You make the call</h3>
+                    <p>Before the zone is revealed, tap Ball or Strike. The measurement bar showing the batter's knee and letter heights fades out as the ball arrives — no cheating.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h3>See where it actually landed</h3>
+                    <p>The rulebook strike zone appears with the ball at its exact coordinates. Borderline pitches earn bonus points. You'll also see whether the actual umpire got it right.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h3>Beat the ump</h3>
+                    <p>At the end of each game, your accuracy is compared directly against the umpire's. Some MLB umps sit around 94% accuracy. Can you beat them?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GAME MODES -->
+<section id="modes" style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="section-inner">
+        <div class="section-label">Game Modes</div>
+        <h2 class="section-title">Four ways to play</h2>
+        <div class="modes-grid">
+            <div class="mode-card">
+                <span class="mode-emoji">⚡️</span>
+                <h3>Arcade</h3>
+                <p>10 random borderline pitches from recent games. Quick, addictive, and great for building your eye.</p>
+                <span class="mode-badge badge-free">FREE</span>
+            </div>
+            <div class="mode-card">
+                <span class="mode-emoji">📅</span>
+                <h3>Daily Challenge</h3>
+                <p>10 blown calls from yesterday. Same pitches for every player worldwide. New challenge every day.</p>
+                <span class="mode-badge badge-free">FREE</span>
+            </div>
+            <div class="mode-card">
+                <span class="mode-emoji">🏟️</span>
+                <h3>Full Game</h3>
+                <p>Pick any real MLB game. Call every pitch in order with live count, score, and inning data.</p>
+                <span class="mode-badge badge-pro">PRO</span>
+            </div>
+            <div class="mode-card">
+                <span class="mode-emoji">🚨</span>
+                <h3>Blown Calls</h3>
+                <p>Filter any game to only the pitches the umpire missed. How many can you spot correctly?</p>
+                <span class="mode-badge badge-pro">PRO</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DATA -->
+<section>
+    <div class="section-inner">
+        <div class="section-label">Data</div>
+        <h2 class="section-title">Powered by the same data<br>MLB uses to review calls</h2>
+        <p class="section-sub">Every pitch coordinate, spin rate, and velocity comes directly from official sources — the same data that drives ABS challenges during real games.</p>
+        <div class="data-pills">
+            <div class="data-pill"><div class="dot"></div>Baseball Savant (Statcast)</div>
+            <div class="data-pill"><div class="dot"></div>MLB Stats API</div>
+            <div class="data-pill"><div class="dot"></div>ABS Strike Zone Rules</div>
+            <div class="data-pill"><div class="dot"></div>Per-batter dynamic zone height</div>
+            <div class="data-pill"><div class="dot"></div>Real pitch coordinates (plate_x / plate_z)</div>
+            <div class="data-pill"><div class="dot"></div>Live game feed</div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="section-inner">
+        <h2>Ready to show up the umps?</h2>
+        <p>Free to download. Arcade and Daily Challenge always free.</p>
+        <a href="https://apps.apple.com/app/id6772781356" class="btn-primary" style="font-size: 17px; padding: 16px 32px;">
+            Download Borderline
+        </a>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <a href="/" class="footer-logo">Border<span>line</span></a>
+        <div class="footer-links">
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="mailto:azzopalj@gmail.com">Support</a>
+            <a href="https://apps.apple.com/app/id6772781356">App Store</a>
+        </div>
+        <p class="footer-copy">
+            Not affiliated with or endorsed by MLB or any MLB team. Pitch data sourced from Baseball Savant and the MLB Stats API.
+            &copy; 2025 Borderline.
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>
