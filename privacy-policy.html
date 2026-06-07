@@ -1,192 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy — Borderline</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root {
-            --bg: #080f1a; --bg2: #0d1829;
-            --border: rgba(255,255,255,0.08);
-            --amber: #f9c774;
-            --text: #ffffff;
-            --text-dim: rgba(255,255,255,0.6);
-            --text-faint: rgba(255,255,255,0.25);
-        }
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg); color: var(--text);
-            line-height: 1.7; -webkit-font-smoothing: antialiased;
-        }
-        nav {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 16px 40px;
-            border-bottom: 1px solid var(--border);
-        }
-        .nav-logo { font-size: 18px; font-weight: 700; color: var(--text); text-decoration: none; }
-        .nav-logo span { color: var(--amber); }
-        .nav-back { font-size: 14px; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
-        .nav-back:hover { color: var(--text); }
-
-        .container {
-            max-width: 720px; margin: 0 auto;
-            padding: 64px 24px 96px;
-        }
-        .page-label {
-            font-size: 11px; font-weight: 600; letter-spacing: 2px;
-            color: var(--amber); text-transform: uppercase; margin-bottom: 14px;
-        }
-        h1 {
-            font-size: clamp(28px, 5vw, 42px);
-            font-weight: 700; letter-spacing: -0.8px;
-            line-height: 1.15; margin-bottom: 12px;
-        }
-        .last-updated {
-            font-size: 14px; color: var(--text-faint); margin-bottom: 48px;
-        }
-        .summary-box {
-            padding: 24px; border-radius: 14px;
-            background: rgba(249,199,116,0.07);
-            border: 1px solid rgba(249,199,116,0.2);
-            margin-bottom: 48px;
-        }
-        .summary-box h2 {
-            font-size: 15px; font-weight: 600; color: var(--amber);
-            margin-bottom: 12px;
-        }
-        .summary-box ul {
-            list-style: none; display: flex; flex-direction: column; gap: 8px;
-        }
-        .summary-box li {
-            font-size: 14px; color: var(--text-dim);
-            display: flex; align-items: flex-start; gap: 10px;
-        }
-        .summary-box li::before { content: '✓'; color: var(--amber); flex-shrink: 0; }
-
-        h2 {
-            font-size: 20px; font-weight: 600;
-            margin-top: 44px; margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border);
-        }
-        p { font-size: 15px; color: var(--text-dim); margin-bottom: 16px; }
-        ul.body-list {
-            list-style: disc; padding-left: 20px;
-            display: flex; flex-direction: column; gap: 8px;
-            margin-bottom: 16px;
-        }
-        ul.body-list li { font-size: 15px; color: var(--text-dim); }
-        a { color: var(--amber); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
-        .contact-box {
-            margin-top: 48px; padding: 24px; border-radius: 14px;
-            background: var(--bg2); border: 1px solid var(--border);
-        }
-        .contact-box h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-        .contact-box p { font-size: 14px; margin-bottom: 0; }
-
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 32px 40px;
-            display: flex; justify-content: space-between;
-            align-items: center; flex-wrap: gap;
-            font-size: 13px; color: var(--text-faint);
-        }
-        footer a { color: var(--text-faint); text-decoration: none; }
-        footer a:hover { color: var(--text-dim); }
-
-        @media (max-width: 600px) {
-            nav { padding: 14px 20px; }
-            footer { padding: 24px 20px; flex-direction: column; gap: 8px; text-align: center; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Borderline – Privacy Policy</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a1828;
+      color: #e8e8e8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      padding: 40px 20px 80px;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+    .logo span { color: #f9c774; }
+    .subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 48px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    h2 {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin: 40px 0 12px;
+    }
+    h2:first-of-type { margin-top: 0; }
+    .card {
+      background: rgba(255,255,255,0.06);
+      border: 0.5px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 2px;
+    }
+    .card + .card { border-radius: 14px; margin-top: 2px; }
+    .card p { font-size: 14px; color: rgba(255,255,255,0.75); }
+    .card strong { color: #fff; font-weight: 600; }
+    .badge {
+      display: inline-block;
+      background: rgba(249,199,116,0.15);
+      color: #f9c774;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .badge.red {
+      background: rgba(235,87,87,0.15);
+      color: #eb5757;
+    }
+    ul { padding-left: 18px; }
+    ul li { font-size: 14px; color: rgba(255,255,255,0.75); margin-bottom: 4px; }
+    a { color: #f9c774; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .updated {
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 60px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
 
-<nav>
-    <a href="/" class="nav-logo">Border<span>line</span></a>
-    <a href="/" class="nav-back">← Back to home</a>
-</nav>
+    <div class="logo">Border<span>line</span></div>
+    <div class="subtitle">Privacy Policy</div>
 
-<div class="container">
-    <div class="page-label">Legal</div>
-    <h1>Privacy Policy</h1>
-    <p class="last-updated">Last updated: May 2025</p>
-
-    <div class="summary-box">
-        <h2>The short version</h2>
-        <ul>
-            <li>We collect no personal information</li>
-            <li>No account or sign-in required</li>
-            <li>All your stats and game history are stored on your device only</li>
-            <li>No third-party analytics, tracking, or advertising</li>
-            <li>In-app purchases are handled entirely by Apple</li>
-            <li>Network requests only go to MLB's public data APIs</li>
-        </ul>
+    <!-- Overview -->
+    <h2>Overview</h2>
+    <div class="card">
+      <p>Borderline is an MLB umpire simulator. We are committed to being transparent about how the app works. <strong>We do not collect, store, or sell your personal information.</strong> All game statistics and preferences are stored locally on your device.</p>
+      <br />
+      <p>The app uses <strong>Google AdMob</strong> to serve ads to non-premium users. AdMob may collect certain data as described below. Premium subscribers (<em>Borderline Pro</em>) have all ads removed and are not subject to ad-related data collection.</p>
     </div>
 
-    <h2>1. Overview</h2>
-    <p>Borderline ("the app", "we", "us") is a baseball game for iOS. We are committed to protecting your privacy. This policy explains what data the app collects, how it is used, and your rights.</p>
-    <p>The simple truth: Borderline does not collect, store, or transmit any personal information. The app functions entirely on your device.</p>
-
-    <h2>2. Information We Collect</h2>
-    <p>We do not collect any personally identifiable information. Specifically:</p>
-    <ul class="body-list">
-        <li><strong>No account required.</strong> You do not create an account, sign in, or provide any personal details to use the app.</li>
-        <li><strong>No analytics.</strong> We do not use any analytics SDK (e.g. Firebase, Mixpanel, Amplitude). We collect no usage data, crash logs, or behavioral telemetry.</li>
-        <li><strong>No advertising.</strong> The app contains no advertisements and no ad tracking.</li>
-        <li><strong>No location data.</strong> The app never requests or accesses your location.</li>
-        <li><strong>No contacts, camera, or microphone.</strong> The app does not request access to any device sensors or personal data stores.</li>
-    </ul>
-
-    <h2>3. Data Stored On Your Device</h2>
-    <p>The following data is stored locally on your device only and is never transmitted to us or any third party:</p>
-    <ul class="body-list">
-        <li><strong>Game statistics</strong> — your accuracy percentages, streaks, points, and pitch history, stored via Apple's SwiftData framework in the app's private sandbox.</li>
-        <li><strong>Daily Challenge completion status</strong> — a date string stored in UserDefaults to track whether you've played today's challenge.</li>
-        <li><strong>Last known game date</strong> — a date string stored in UserDefaults for the off-season fallback feature.</li>
-        <li><strong>Premium unlock status</strong> — managed entirely by Apple's StoreKit framework. We never see or store your payment information.</li>
-    </ul>
-    <p>This data is stored in your app's private container. It is included in iCloud backups if you have iCloud backup enabled, but is not accessible to us.</p>
-
-    <h2>4. Network Requests</h2>
-    <p>The app makes network requests to the following public data sources to fetch baseball game data:</p>
-    <ul class="body-list">
-        <li><strong>MLB Stats API</strong> (<code>statsapi.mlb.com</code>) — for game schedules, live pitch data, and umpire assignments. This is a public API. No personal data is included in these requests.</li>
-        <li><strong>Baseball Savant / Statcast</strong> (<code>baseballsavant.mlb.com</code>) — for pitch coordinate data used in Arcade mode. This is a public endpoint. No personal data is included in these requests.</li>
-    </ul>
-    <p>No user identifiers, device IDs, or personal information are included in any network request. Requests consist only of query parameters for game dates and game IDs.</p>
-
-    <h2>5. In-App Purchases</h2>
-    <p>Borderline offers a one-time optional premium unlock ("Borderline Pro"). All payment processing is handled exclusively by Apple through the App Store. We never receive, store, or process any payment card information or billing details.</p>
-    <p>Apple's privacy policy applies to all purchase transactions: <a href="https://www.apple.com/legal/privacy/" target="_blank">apple.com/legal/privacy</a>.</p>
-
-    <h2>6. Children's Privacy</h2>
-    <p>Borderline does not knowingly collect any information from children under 13. The app collects no personal information from any user regardless of age.</p>
-
-    <h2>7. Changes to This Policy</h2>
-    <p>If we make material changes to this privacy policy, we will update the "last updated" date at the top of this page. We encourage you to review this policy periodically. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
-
-    <h2>8. Third-Party Services</h2>
-    <p>The app does not integrate any third-party SDKs for analytics, advertising, crash reporting, or social features. The only external network communication is with the public MLB data APIs described in Section 4.</p>
-
-    <h2>9. Your Rights</h2>
-    <p>Since we collect no personal data, there is nothing for us to access, correct, export, or delete on your behalf. All app data (statistics, preferences) is stored locally on your device and can be cleared at any time by deleting the app.</p>
-
-    <div class="contact-box">
-        <h3>Questions or concerns?</h3>
-        <p>If you have any questions about this privacy policy or the app's data practices, please contact us at <a href="mailto:azzopalj@gmail.com">azzopalj@gmail.com</a>. We aim to respond within 2 business days.</p>
+    <!-- What we collect -->
+    <h2>Data We Collect</h2>
+    <div class="card">
+      <div class="badge">Stored on-device only</div>
+      <p><strong>Game statistics</strong> — your accuracy, streaks, points, and session history are stored locally via Apple's SwiftData framework. This data never leaves your device and is not accessible to us.</p>
     </div>
-</div>
+    <div class="card" style="margin-top:2px">
+      <div class="badge">Stored on-device only</div>
+      <p><strong>Preferences &amp; settings</strong> — notification preferences, reminder time, and premium unlock status are stored locally via UserDefaults and Apple's StoreKit.</p>
+    </div>
+    <div class="card" style="margin-top:2px">
+      <p><strong>No account required.</strong> We do not ask you to create an account, provide an email address, or sign in with any service.</p>
+    </div>
 
-<footer>
-    <span>&copy; 2025 Borderline. Not affiliated with MLB.</span>
-    <a href="/">← Back to home</a>
-</footer>
+    <!-- AdMob -->
+    <h2>Advertising (Google AdMob)</h2>
+    <div class="card">
+      <div class="badge red">Third-party data collection</div>
+      <p>The free version of Borderline displays banner and interstitial ads powered by <strong>Google AdMob</strong>. Google may collect the following data to serve relevant ads:</p>
+      <br />
+      <ul>
+        <li><strong>Advertising identifier (IDFA)</strong> — only if you grant permission via the App Tracking Transparency (ATT) prompt when you first open the app.</li>
+        <li><strong>Device identifiers (IDFV)</strong> — used by AdMob for frequency capping and fraud prevention.</li>
+        <li><strong>Approximate location</strong> — inferred from your IP address for regional ad targeting. Your precise location is never accessed.</li>
+        <li><strong>App usage data</strong> — ad impressions and interactions (e.g. whether an ad was tapped).</li>
+      </ul>
+      <br />
+      <p>You can limit ad tracking at any time in <strong>iOS Settings → Privacy &amp; Security → Tracking</strong>. You can also opt out by purchasing <strong>Borderline Pro</strong>, which removes all ads permanently.</p>
+      <br />
+      <p>Google's privacy policy: <a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a></p>
+    </div>
 
+    <!-- Network -->
+    <h2>Network Requests</h2>
+    <div class="card">
+      <p>Borderline communicates with the following external services:</p>
+      <br />
+      <ul>
+        <li><strong>MLB Stats API &amp; Baseball Savant (Statcast)</strong> — to fetch real pitch data and game schedules. No personal identifiers are sent. These are public MLB data sources.</li>
+        <li><strong>Google AdMob</strong> — to load and serve ads (free users only).</li>
+        <li><strong>Apple App Store</strong> — to verify and process in-app purchases via StoreKit.</li>
+        <li><strong>Apple Game Center</strong> — to authenticate players and submit leaderboard scores. Subject to Apple's privacy policy.</li>
+        <li><strong>Apple Push Notification service (APNs)</strong> — to deliver daily challenge reminders if you enable notifications. No message content is stored on our servers.</li>
+      </ul>
+    </div>
+
+    <!-- In-app purchases -->
+    <h2>In-App Purchases</h2>
+    <div class="card">
+      <p>All purchases are processed entirely by Apple through the App Store. We never see or store your payment information. Purchase records are managed by Apple and StoreKit.</p>
+    </div>
+
+    <!-- Game Center -->
+    <h2>Game Center</h2>
+    <div class="card">
+      <p>Borderline uses Apple Game Center to maintain a global leaderboard. If you are signed in to Game Center, your Game Center alias and score may be visible to other players on the leaderboard. This is governed by <a href="https://www.apple.com/legal/privacy/" target="_blank">Apple's Privacy Policy</a>.</p>
+    </div>
+
+    <!-- Children -->
+    <h2>Children's Privacy</h2>
+    <div class="card">
+      <p>Borderline is not directed at children under 13. We do not knowingly collect personal information from children. The app is rated 4+ on the App Store.</p>
+    </div>
+
+    <!-- Changes -->
+    <h2>Changes to This Policy</h2>
+    <div class="card">
+      <p>If we make material changes to this privacy policy we will update this page. Continued use of the app after changes are posted constitutes your acceptance of the updated policy.</p>
+    </div>
+
+    <!-- Contact -->
+    <h2>Contact</h2>
+    <div class="card">
+      <p>Questions or concerns? Email us at <a href="mailto:azzopalj@gmail.com">azzopalj@gmail.com</a>. We aim to respond within two business days.</p>
+    </div>
+
+    <p class="updated">Last updated: June 2025 · Borderline by Lucas Azzopardi</p>
+
+  </div>
 </body>
 </html>
